@@ -57,6 +57,7 @@ function getMarkers()
 
     function initMap() {
         var myLatLng = {lat: 48.60222, lng: 2.42245};
+        var infowindow = new google.maps.InfoWindow();
         var image = {
             url: 'marker.png',
             size: new google.maps.Size(50, 55),
@@ -69,19 +70,17 @@ function getMarkers()
             center: myLatLng
         });
 
-        var marker, i;
         for (i = 0; i < locations.length; i++) {
+
+            var position = new google.maps.LatLng(locations[i][0], locations[i][1]);
             var contentString = locations[i];
 
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-
             marker = new google.maps.Marker({
-                position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+                position: position,
                 map: map,
                 title: locations[i][2],
-                icon: image
+                icon: image,
+                contentString: contentString
             });
 
             marker.data = locations[i];
@@ -100,10 +99,10 @@ function getMarkers()
                         '<p><b>Fax : </b>'+ this.data[7] +'</p>'+
                         '</div>');
                     infowindow.open(map, this);
+                    map.setCenter(this.getPosition());
                 }
             });
         }
-        marker.setMap(map);
     };
 </script>
 <script async defer
